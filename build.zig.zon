@@ -1,0 +1,17 @@
+.{
+    .name = "syke",
+    .version = "0.0.1",
+
+    .dependencies = .{
+        .ziglua = .{
+            .url = "git+https://github.com/natecraddock/ziglua?ref=zig-0.13.0#bcbfe40acd7218430b5fb7a880615b2bf15c02ac",
+            .hash = "1220a7983916ac2bcba3ded67174ef354012da525c7f85b0e48a416368a637012d78",
+        },
+        .clap = .{
+            .url = "https://github.com/Hejsil/zig-clap/archive/refs/tags/0.9.1.tar.gz",
+            .hash = "122062d301a203d003547b414237229b09a7980095061697349f8bef41be9c30266b",
+        },
+    },
+
+    .paths = .{ "build.zig", "build.zig.zon", "src", "LICENSE", "README.md" },
+}
