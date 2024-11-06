@@ -44,6 +44,25 @@ pub fn main() anyerror!void {
     var lua = try Lua.init(allocator);
     defer lua.deinit();
 
-    lua.pushInteger(42);
-    std.debug.print("{}\n", .{try lua.toInteger(1)});
+    // NOTE: this is needed to "cast" the file name from a []const u8 to [:0]const u8 (which lua.doFile expects)
+    const file_name = try std.fmt.allocPrintZ(allocator, "{s}", .{res.positionals[0]});
+    defer allocator.free(file_name);
+
+    // TODO: check if the file even exists before dumping it into lua.doFile
+    // TODO: better error handling
+    try lua.doFile(file_name);
+
+    std.debug.print("isTable = {}\n", .{lua.isTable(-1)});
+    _ = lua.getField(-1, "foo");
+    std.debug.print("foo isTable = {}\n", .{lua.isTable(-1)});
+    _ = lua.getField(-1, "bar");
+    std.debug.print("bar isInteger = {}\n", .{lua.isInteger(-1)});
+    const bar = lua.toInteger(-1);
+    std.debug.print("bar = {any}\n", .{bar});
+    lua.pop(2);
+
+    _ = lua.getField(-1, "symlinks");
+    std.debug.print("symlinks isTable = {}\n", .{lua.isTable(-1)});
+    _ = lua.len(-1);
+    std.debug.print("symlinks.len = {any}\n", .{lua.toInteger(-1)});
 }
