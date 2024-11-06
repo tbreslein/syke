@@ -10,7 +10,7 @@ build:
 	zig build
 
 run:
-	zig build run
+	zig build run -- $(ARGS)
 
 test:
 	zig build test
